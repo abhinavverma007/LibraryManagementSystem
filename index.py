@@ -33,6 +33,7 @@ class MainApp(QMainWindow,ui):
         self.pushButton_14.clicked.connect(self.Add_Category)
         self.pushButton_15.clicked.connect(self.Add_Author)
         self.pushButton_16.clicked.connect(self.Add_Publisher)
+        self.pushButton_9.clicked.connect(self.Search_Books)
 
     def Open_Day_To_Day_Tab(self):
         self.tabWidget.setCurrentIndex(0)
@@ -64,9 +65,7 @@ class MainApp(QMainWindow,ui):
         book_price=self.lineEdit_4.text()
 
         self.cur.execute(''' INSERT INTO book(book_name,book_description,book_code,book_category,book_author,book_publisher,book_price)
-                    VALUES(%s,%s,%s,%s,%s,%s,%s),
-                (book_name,book_description,book_code,book_category,book_author,
-                book_publisher,book_price)''')
+                    VALUES(book_name,book_description,book_code,book_category,book_author,book_publisher,book_price)''')
         self.db.commit()
         self.statusBar().showMessage('New Book Added')
 
@@ -78,8 +77,21 @@ class MainApp(QMainWindow,ui):
         self.comboBox_5.setCurrentIndex(0)
 
     def Search_Books(self):
-        pass
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
+        self.cur=self.db.cursor()
 
+        book_title=self.lineEdit_5.text()
+        sql=''' SELECT * FROM book WHERE book_name= %s '''
+        self.cur.execute(sql,[(book_title)])
+        data=self.cur.fetchone()
+        self.lineEdit_8.setText(data[1])
+        self.textEdit_2.setPlainText(data[2])
+        self.lineEdit_7.setText(data[3])
+        self.comboBox_7.setCurrentIndex(data[4])
+        self.comboBox_8.setCurrentIndex(data[5])
+        self.comboBox_6.setCurrentIndex(data[6])
+        self.lineEdit_6.setText(data[7])
+        
     def Edit_Books(self):
         pass
 
@@ -103,7 +115,7 @@ class MainApp(QMainWindow,ui):
     ## SETTINGS ###
 
     def Add_Category(self):
-        self.db=MySQLdb.connect(host='localhost',user='root',password='',db='library')
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
         self.cur=self.db.cursor()
         category_name=self.lineEdit_19.text()
         self.cur.execute('''
@@ -211,6 +223,8 @@ class MainApp(QMainWindow,ui):
         self.comboBox_3.clear()
         for category in  data:
             self.comboBox_3.addItem(category[0])
+            self.comboBox_7.addItem(category[0])
+            
             
 
     def Show_Author_Combobox(self):
@@ -223,6 +237,7 @@ class MainApp(QMainWindow,ui):
         self.comboBox_4.clear()
         for author in  data:
             self.comboBox_4.addItem(author[0])
+            self.comboBox_8.addItem(author[0])
 
     def Show_Publisher_Combobox(self):
         
@@ -234,6 +249,7 @@ class MainApp(QMainWindow,ui):
         self.comboBox_5.clear()
         for publisher in  data:
             self.comboBox_5.addItem(publisher[0])
+            self.comboBox_6.addItem(publisher[0])
         
         
 
