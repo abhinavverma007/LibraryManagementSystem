@@ -23,6 +23,10 @@ class MainApp(QMainWindow,ui):
         self.pushButton_2.clicked.connect(self.Open_Books_Tab)
         self.pushButton_3.clicked.connect(self.Open_Users_Tab)
         self.pushButton_4.clicked.connect(self.Open_Settings_Tab)
+        self.pushButton_7.clicked.connect(self.Add_New_Book)
+        self.pushButton_14.clicked.connect(self.Add_Category)
+        self.pushButton_15.clicked.connect(self.Add_Author)
+        self.pushButton_16.clicked.connect(self.Add_Publisher)
 
     def Open_Day_To_Day_Tab(self):
         self.tabWidget.setCurrentIndex(0)
@@ -43,7 +47,14 @@ class MainApp(QMainWindow,ui):
         ####BOOKS#####
 
     def Add_New_Book(self):
-        pass
+        self.db=MySQLdb.connect(host='localhost',user='root',password='kirtisaloni2',db='library')
+        self.cur=self.db.cursor()
+        book_title=self.lineEdit_3.text()
+        book_code=self.lineEdit_2.text()
+        book_category=self.comboBox_3.CurrentText()
+        book_author=self.comboBox_3.CurrentText()
+        book_publisher=self.comboBox_3.CurrentText()
+        book_price=self.comboBox_3.CurrentText()
 
     def Search_Books(self):
         pass
@@ -67,30 +78,43 @@ class MainApp(QMainWindow,ui):
     def Edit_User(self):
         pass
 
+   #####################
+    ## SETTINGS ###
 
+    def Add_Category(self):
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
+        self.cur=self.db.cursor()
+        category_name=self.lineEdit_19.text()
+        self.cur.execute('''
+            INSERT INTO category (category_name) VALUES(%s)
+            ''',(category_name,))
 
+        self.db.commit()
+        self.statusBar().showMessage('New Category Added')
 
+    def Add_Author(self):
+        
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
+        self.cur=self.db.cursor()
+        author_name=self.lineEdit_20.text()
+        self.cur.execute('''
+            INSERT INTO authors (author_name) VALUES(%s)
+            ''',(author_name,))
 
+        self.db.commit()
+        self.statusBar().showMessage('New Author Added')
 
+    def Add_Publisher(self):
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
+        self.cur=self.db.cursor()
+        publisher_name=self.lineEdit_20.text()
+        self.cur.execute('''
+            INSERT INTO publisher (publisher_name) VALUES(%s)
+            ''',(publisher_name,))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+        self.db.commit()
+        self.statusBar().showMessage('New Publisher Added')
+ 
 
         
 
