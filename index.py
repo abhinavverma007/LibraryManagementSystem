@@ -47,7 +47,7 @@ class MainApp(QMainWindow,ui):
         ####BOOKS#####
 
     def Add_New_Book(self):
-        self.db=MySQLdb.connect(host='localhost',user='root',password='kirtisaloni2',db='library')
+        self.db=MySQLdb.connect(host='localhost',user='root',password='**',db='library')
         self.cur=self.db.cursor()
         book_title=self.lineEdit_3.text()
         book_code=self.lineEdit_2.text()
